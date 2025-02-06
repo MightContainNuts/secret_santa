@@ -26,3 +26,7 @@ Check if the function returns a dictionary with the same length as the list
 Check if the function does not assign a person to themselves
 
 
+****Notes****
+
+There is a dummy json file included, so if you can overwrite  the default file
+this is required if you run the same year again, so the program will not assign the same Secret Santa as the previous year.
