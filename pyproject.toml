@@ -4,11 +4,14 @@ version = "0.1.0"
 description = ""
 authors = ["MightContainNuts <mightcontainnuts@icloud.com>"]
 readme = "README.md"
+package-mode = false  # Disable packaging mode
 
 [tool.poetry.dependencies]
 python = "^3.12"
 pytest = "^8.3.4"
 
+[tool.poetry.dev-dependencies]
+pytest = "^8.3"
 
 [build-system]
 requires = ["poetry-core"]

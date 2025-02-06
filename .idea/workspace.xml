@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e82bcbc1-0f4c-4da4-a0c5-9b9ff38046d2" name="Changes" comment="" />
+    <list default="true" id="e82bcbc1-0f4c-4da4-a0c5-9b9ff38046d2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +19,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="pythjon loger" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
@@ -118,7 +124,7 @@
       <option name="presentableId" value="Default" />
       <updated>1734587839225</updated>
       <workItem from="1734587850538" duration="56000" />
-      <workItem from="1738838645726" duration="18778000" />
+      <workItem from="1738838645726" duration="20866000" />
     </task>
     <servers />
   </component>
