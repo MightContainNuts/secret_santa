@@ -1,6 +1,9 @@
 import random
 import json
 from typing import Tuple
+from logger import setup_logger
+
+logger = setup_logger(__name__)
 
 
 Partner_1 = dict
@@ -20,34 +23,42 @@ class SecretSanta:
             4: ["Print participants", self._print_participants],
             5: ["Exit", exit]
         }
+        logger.info(f"Secret Santa for {self.year} started")
 
     def __enter__(self):
         self.data = self.read_json()
+        logger.info(f"Data loaded from {self.file}")
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.write_json()
+        logger.info(f"Data written to {self.file}")
+        logger.info(f"Secret Santa for {self.year} ended")
 
-    @staticmethod
-    def read_json():
+
+    def read_json(self):
         """read data from json"""
-        with open(FILE, "r") as file:
+        with open(self.file, "r") as file:
             data = json.load(file)
+            logger.info(f"Data read from {self.file}")
         return data
 
     def write_json(self):
         """write data to json"""
         with open(FILE, "w") as file:
             json.dump(self.data, file, indent=4)
+            logger.info(f"Data written to {self.file}")
 
     def assign_secret_santa(self,partner_1:Partner_1)->Tuple[Partner_1,Partner_2]:
         """randomly assign secret santa to each participant"""
         potential_partners = self._create_potential_partners(partner_1)
         partner_2 = random.choice(potential_partners)
+        logger.info(f"{partner_1} secret santa is {partner_2}")
         self.data[partner_1][self.year] = partner_2
         try:
             self.write_json()
         except Exception as e:
+            logger.error(f"Error writing to {self.file}")
             print(e)
         return partner_1, partner_2
 
@@ -55,6 +66,7 @@ class SecretSanta:
         for participant in self.data:
             partner_pair = self.assign_secret_santa(participant)
             self.partner_pairs.append(partner_pair)
+            logger.info(f"Secret Santa partner pair creates: {partner_pair}")
         self._print_secret_santa()
         return self.partner_pairs
 
@@ -68,38 +80,46 @@ class SecretSanta:
                     break
                 else:
                     print(f"{non_partner} does not exist in the data")
+                    logger.warning(f"{non_partner} does not exist in the data")
             else:
                 print(f"{participant} does not exist in the data")
+                logger.warning(f"{participant} does not exist in the data")
 
     def add_new_participant(self):
         """add new participant to the data"""
         participant = input("Enter participant: ")
         if self._check_if_partner_exists(participant):
             print(f"{participant} already exists in the data")
+            logger.warning(f"{participant} already exists in the data")
         else:
             self.data[participant] = {
                 "non_partner": []
             }
             self.write_json()
+            print(f"{participant} added to the data")
 
     # private methods
     def _create_potential_partners(self, partner_1:Partner_1)->list[str]:
         """create a list of potential partners for each participant"""
         potential_partners = list(self.data.keys())
         potential_partners.remove(partner_1)
+        logger.info(f"Potential partners for {partner_1}: {potential_partners}")
 
         already_partnered = self.__get_already_partnered()
         potential_partners = list(filter(lambda p: p not in already_partnered,
                                          potential_partners))
+        logger.info(f"Potential partners for {partner_1} after removing already partnered: {potential_partners}")
 
         previous_year_partner = self.__get_previous_year_partner(partner_1)
         if previous_year_partner in potential_partners:
             potential_partners.remove(previous_year_partner)
+        logger.info(f"Potential partners for {partner_1} after removing previous year partner: {potential_partners}")
 
         non_partners = self.__get_non_partners(partner_1)
         if non_partners:
             potential_partners = list(filter(lambda p: p not in non_partners,
                                              potential_partners))
+        logger.info(f"Potential partners for {partner_1} after removing non partners: {potential_partners}")
         return potential_partners
 
 
@@ -121,8 +141,10 @@ class SecretSanta:
             self.data[participant]['non_partner'].append(non_partner)
             self.write_json()
             print(f"{non_partner} added to {participant}'s non partner list")
+            logger.info(f"{non_partner} added to {participant}'s non partner list")
         else:
             print(f"{non_partner} already in {participant}'s non partner list")
+            logger.warning(f"{non_partner} already in {participant}'s non partner list")
 
     def _check_if_partner_exists(self, participant:str)->bool:
         """check if partner_1 exists in the data"""
